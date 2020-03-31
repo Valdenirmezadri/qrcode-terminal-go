@@ -1,6 +1,7 @@
 package qrcodeTerminal
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/skip2/go-qrcode"
