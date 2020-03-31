@@ -73,6 +73,23 @@ type qrcodeTerminal struct {
 	level qrcodeRecoveryLevel
 }
 
+
+func (v *qrcodeTerminal) GetContent(content interface{}) (string, error) {
+	var qr *qrcode.QRCode
+	var err error
+	if t, ok := content.(string); ok {
+		qr, err = qrcode.New(t, qrcode.RecoveryLevel(v.level))
+	} else if t, ok := content.([]byte); ok {
+		qr, err = qrcode.New(string(t), qrcode.RecoveryLevel(v.level))
+	}
+	if qr != nil && err == nil {
+		qrCodeString, _ := json.Marshal(qr)
+		return string(qrCodeString), nil
+	}
+
+	return "", err
+}
+
 func (v *qrcodeTerminal) Get(content interface{}) (result *QRCodeString) {
 	var qr *qrcode.QRCode
 	var err error
